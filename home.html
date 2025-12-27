@@ -9,39 +9,34 @@
       font-family: Arial, sans-serif;
       background: #0e1621;
       color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
       padding: 20px;
     }
     #welcome {
       color: #4fc3f7;
       text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
     }
     #coin {
       text-align: center;
       color: #ffca28;
-      margin-bottom: 20px;
+      margin-bottom: 50px;
+      font-size: 20px;
     }
-    .channel {
-      background: #1b2430;
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-    .channel b {
+    .btn {
+      padding: 15px 30px;
+      margin: 10px 0;
       font-size: 18px;
-      color: #4fc3f7;
-    }
-    .channel p {
-      margin: 8px 0;
-    }
-    .channel button {
-      padding: 10px 15px;
-      margin-right: 10px;
+      border-radius: 12px;
       border: none;
-      border-radius: 10px;
-      font-size: 16px;
       cursor: pointer;
       transition: 0.3s;
+      width: 200px;
     }
     .sub-btn {
       background: #4caf50;
@@ -50,26 +45,26 @@
     .sub-btn:hover {
       background: #45a049;
     }
-    .buy-btn {
-      background: #f44336;
+    .order-btn {
+      background: #2196f3;
       color: #fff;
     }
-    .buy-btn:hover {
-      background: #e53935;
+    .order-btn:hover {
+      background: #1976d2;
     }
   </style>
 </head>
 <body>
 
-<h1 id="welcome">Loading...</h1>
+<h1 id="welcome">Welcome, User</h1>
 <h2 id="coin">Coins: 0</h2>
 
-<h3>Channels</h3>
-<div id="channels"></div>
+<button class="btn sub-btn" id="subscribeBtn">Subscribe</button>
+<button class="btn order-btn" id="createOrderBtn">Create Order</button>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getDatabase, ref, get, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
 
 /* 🔹 Firebase config */
 const firebaseConfig = {
@@ -88,72 +83,29 @@ const db = getDatabase(app);
 /* 🔹 USER ID TEKSHIRISH */
 const params = new URLSearchParams(window.location.search);
 const userId = params.get("user");
-
 if (!userId) {
   alert("Login qilinmagan!");
   window.location.href = "index.html";
   throw new Error("User ID yo‘q");
 }
 
+/* 🔹 User coin ko‘rsatish */
 const userRef = ref(db, "users/" + userId);
-const channelsRef = ref(db, "channels");
-
-/* 🔹 USER DATA */
 onValue(userRef, snap => {
-  if (!snap.exists()) {
-    alert("User topilmadi!");
-    window.location.href = "index.html";
-    return;
-  }
+  if (!snap.exists()) return;
   const u = snap.val();
   document.getElementById("welcome").innerText = "Welcome, " + (u.name || "User");
   document.getElementById("coin").innerText = "Coins: " + (u.coin || 0);
 });
 
-/* 🔹 CHANNELS */
-onValue(channelsRef, snap => {
-  const box = document.getElementById("channels");
-  box.innerHTML = "";
+/* 🔹 Tugmalarni ishlatish */
+document.getElementById("subscribeBtn").onclick = () => {
+  window.location.href = "subscribe.html?user=" + userId;
+};
 
-  snap.forEach(ch => {
-    const c = ch.val();
-    const id = ch.key;
-
-    const div = document.createElement("div");
-    div.classList.add("channel");
-    div.innerHTML = `
-      <b>${c.name}</b>
-      <p>Subscribers: ${c.subscribers || 0}</p>
-      <button id="sub-${id}" class="sub-btn">Subscribe (+1 coin)</button>
-      <button id="buy-${id}" class="buy-btn">Buy (-2 coins)</button>
-    `;
-    box.appendChild(div);
-
-    /* SUBSCRIBE */
-    document.getElementById("sub-" + id).onclick = async () => {
-      const u = (await get(userRef)).val();
-      await update(userRef, { coin: (u.coin || 0) + 1 });
-      alert("+1 coin");
-    };
-
-    /* BUY */
-    document.getElementById("buy-" + id).onclick = async () => {
-      const u = (await get(userRef)).val();
-      if ((u.coin || 0) < 2) {
-        alert("Coin yetarli emas");
-        return;
-      }
-      await update(userRef, { coin: u.coin - 2 });
-
-      const cSnap = await get(ref(db, "channels/" + id));
-      await update(ref(db, "channels/" + id), {
-        subscribers: (cSnap.val().subscribers || 0) + 1
-      });
-
-      alert("Buyurtma qabul qilindi");
-    };
-  });
-});
+document.getElementById("createOrderBtn").onclick = () => {
+  window.location.href = "create-order.html?user=" + userId;
+};
 </script>
 
 </body>
