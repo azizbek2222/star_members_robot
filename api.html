@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Markazi - Star Market</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="api.css">
+</head>
+<body>
+
+<div class="api-container">
+    <div class="header">
+        <button class="back-btn" onclick="window.history.back()">⬅️</button>
+        <h1>API Markazi</h1>
+    </div>
+
+    <div class="api-card" id="api-generate-section">
+        <div class="icon">🔑</div>
+        <h2>API Kalitingiz</h2>
+        <p>Ilovalaringizni tashqi saytlarda ko'rsatish uchun API kalit yarating.</p>
+        <button class="btn-primary" id="gen-btn" onclick="generateAPI()">API Kalit Yaratish</button>
+        <div id="key-display" class="key-box" style="display: none;">
+            <code id="api-key-text"></code>
+        </div>
+    </div>
+
+    <div class="sdk-section" id="sdk-section" style="display: none;">
+        <h3>Integratsiya qilish</h3>
+        
+        <p>1. Quyidagi kodni saytingizning <code>&lt;head&gt;</code> qismiga qo'ying:</p>
+        <div class="code-wrapper">
+            <pre><code>&lt;script src="https://your-domain.com/star-sdk.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+
+        <p>2. Ilovalar chiqishi kerak bo'lgan joyga ushbu kodni qo'ying:</p>
+        <div class="code-wrapper">
+            <pre><code id="sdk-init-code"></code></pre>
+        </div>
+    </div>
+</div>
+
+<script src="api.js"></script>
+</body>
+</html>

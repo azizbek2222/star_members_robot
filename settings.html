@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sozlamalar - Star Market</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <div class="header">
+        <button class="back-btn" onclick="window.history.back()">⬅️</button>
+        <h1>Profil</h1>
+    </div>
+
+    <div class="profile-card">
+        <div class="avatar-wrapper">
+            <img id="user-photo" src="https://via.placeholder.com/100" alt="Profil">
+        </div>
+        <h2 id="user-name">Yuklanmoqda...</h2>
+        <p class="user-id">ID: <span id="user-id">00000000</span></p>
+    </div>
+
+    <div class="menu-list">
+        <div class="menu-item" onclick="location.href='api.html'">
+            <div class="menu-icon">🌐</div>
+            <div class="menu-text">
+                <h3>API Markazi</h3>
+                <p>Loyihangiz uchun API kalitlarini oling</p>
+            </div>
+            <div class="menu-arrow">❯</div>
+        </div>
+        
+        <div class="menu-item" onclick="Telegram.WebApp.close()">
+            <div class="menu-icon" style="background: #fce8e6; color: #d93025;">🚪</div>
+            <div class="menu-text">
+                <h3>Chiqish</h3>
+                <p>Ilovani yopish</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="settings.js"></script>
+</body>
+</html>
